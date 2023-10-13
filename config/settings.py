@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "company",
     "recruitment_notice",
+    "recruitment_support",
+    "account",
 ]
 
 MIDDLEWARE = [
