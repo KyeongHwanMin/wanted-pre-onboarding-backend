@@ -41,3 +41,26 @@ class RecruitmentNoticeTest(APITestCase):
         self.assertEqual(response_json["채용보상금"], recruitment_notice.compensation)
         self.assertEqual(response_json["채용내용"], recruitment_notice.content)
         self.assertEqual(response_json["사용기술"], recruitment_notice.skill)
+
+    def test_update_recruitmentnotice(self):
+        # Arrange
+        url = f"/api/v1/recruitment-notice/{self.recruitment_notice.id}"
+        data = {
+            "채용포지션": "백엔드 개발자",
+            "채용보상금": 200000,
+            "채용내용": "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은",
+            "사용기술": "Django",
+        }
+
+        # Act
+        response = self.client.patch(url, data, format="json")
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = response.json()
+
+        recruitment_notice = RecruitmentNotice.objects.get()
+        self.assertEqual(response_json["채용포지션"], recruitment_notice.position)
+        self.assertEqual(response_json["채용보상금"], recruitment_notice.compensation)
+        self.assertEqual(response_json["채용내용"], recruitment_notice.content)
+        self.assertEqual(response_json["사용기술"], recruitment_notice.skill)
