@@ -8,6 +8,7 @@ from recruitment_notice.serializers import (
     RecruitmentNoticeWriteSerializer,
     RecruitmentNoticeUpdateSerializer,
     RecruitmentNoticeListSerializer,
+    RecruitmentNoticeDetailSerializer,
 )
 
 
@@ -40,6 +41,11 @@ class RecruitmentNoticeView(APIView):
 class RecruitmentNoticeDetailView(APIView):
     def get_object(self, pk):
         return get_object_or_404(RecruitmentNotice, pk=pk)
+
+    def get(self, request, pk, format=None):
+        recruitment_notice_info = self.get_object(pk)
+        serializer = RecruitmentNoticeDetailSerializer(recruitment_notice_info)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, pk):
         recruitment_notice_info = self.get_object(pk)
