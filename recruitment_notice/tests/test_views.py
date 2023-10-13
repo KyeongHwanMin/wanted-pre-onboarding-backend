@@ -64,3 +64,33 @@ class RecruitmentNoticeTest(APITestCase):
         self.assertEqual(response_json["채용보상금"], recruitment_notice.compensation)
         self.assertEqual(response_json["채용내용"], recruitment_notice.content)
         self.assertEqual(response_json["사용기술"], recruitment_notice.skill)
+
+    def test_delete_recruitmentnotice(self):
+        # Arrange
+        url = f"/api/v1/recruitment-notice/{self.recruitment_notice.id}"
+
+        # Act
+        response = self.client.delete(url)
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        with self.assertRaises(RecruitmentNotice.DoesNotExist):
+            RecruitmentNotice.objects.get(id=self.recruitment_notice.id)
+
+    def test_list_recruitmentnotice(self):
+        # Arrange
+        url = "/api/v1/recruitment-notice"
+
+        # Act
+        response = self.client.get(url, format="json")
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for recruitment_notice in response.data:
+            self.assertIn("채용공고_id", recruitment_notice)
+            self.assertIn("회사명", recruitment_notice)
+            self.assertIn("국가", recruitment_notice)
+            self.assertIn("지역", recruitment_notice)
+            self.assertIn("채용포지션", recruitment_notice)
+            self.assertIn("채용보상금", recruitment_notice)
+            self.assertIn("사용기술", recruitment_notice)

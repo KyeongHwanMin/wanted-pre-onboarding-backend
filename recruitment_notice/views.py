@@ -6,10 +6,16 @@ from recruitment_notice.models import RecruitmentNotice
 from recruitment_notice.serializers import (
     RecruitmentNoticeWriteSerializer,
     RecruitmentNoticeUpdateSerializer,
+    RecruitmentNoticeListSerializer,
 )
 
 
 class RecruitmentNoticeView(APIView):
+    def get(self, request):
+        qs = RecruitmentNotice.objects.all()
+        serializer = RecruitmentNoticeListSerializer(qs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request):
         serializer = RecruitmentNoticeWriteSerializer(data=request.data)
 
@@ -33,3 +39,8 @@ class RecruitmentNoticeDetailView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        recruitment_notice_info = self.get_object(pk)
+        recruitment_notice_info.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
