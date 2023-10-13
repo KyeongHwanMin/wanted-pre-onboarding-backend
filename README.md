@@ -1,4 +1,7 @@
 # 원티드 프리 온보딩 백엔드 과제 - 민경환
+[1.개발환경 세팅](#개발-환경-세팅)
+[2.API 명세](#API-Specifications)
+[3.테스트](#테스트)
 
 ## pre requirements
 - Pyenv(https://github.com/pyenv/pyenv)
